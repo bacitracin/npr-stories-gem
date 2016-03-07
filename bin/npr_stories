@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require "./lib/npr_stories"
+
+NprStories::CLI.new.call
