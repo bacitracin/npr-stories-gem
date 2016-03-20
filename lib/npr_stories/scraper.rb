@@ -1,43 +1,38 @@
-# NPR story search that limits results to 5 stories. Using my NPR account key: tracetrace@gmail.com
-# Results come back as XML/NPRML, other options including JSON available. More info @ http://www.npr.org/api/inputReference.php
-# Potential update: offer choice of # of results
-
-BASE_URL = 'http://api.npr.org/query?apiKey=MDIyODk1NDk0MDE0NTYxNzg5NTdkYjVhZA000&numResults=5&id='
-
-# NPR Program ID Numbers, surprisingly only these 10 shows are offered via the API
-ALL_THINGS_CONSIDERED = '2'
-ASK_ME_ANOTHER = '58'
-FRESH_AIR = '13'
-HERE_AND_NOW = '60'
-LATINO_USA = '22'
-MORNING_EDITION = '3'
-TED_RADIO_HOUR = '57'
-WAIT_WAIT = '35'
-WEEKEND_EDITION_SATURDAY = '7'
-WEEKEND_EDITION_SUNDAY = '10'
-
 class NprStories::Scraper
 
-  def initialize(name)
-    @name = name
+BASE_URL = 'http://api.npr.org/query?apiKey=MDIyODk1NDk0MDE0NTYxNzg5NTdkYjVhZA000&id='
+
+#scrape_programs - head over to NPR programs page, scrape data & instantiate new Program objects
+#scrape stories - grabs the stories for a particular program, scrapes another XML page & creates Story objects
+
+  def scrape_programs
+    @doc = Nokogiri::XML(open('http://api.npr.org/list?id=3004'))
+    @programs = @doc.xpath('*//item')
+    @programs.each do |program|
+      new_program = NprStories::Program.new #program is added to all programs in initialize
+      new_program.program_title = program.search('title').text
+      new_program.search_id = program.attributes["id"].value.to_i
+      new_program.additional_info = program.search('additionalInfo').text
+    end
   end
 
-  def pull_stories #returns a list of story hashes
-    api_query = "#{BASE_URL + @name}"
-    @doc = Nokogiri::XML(open(api_query))
-    @stories = @doc.xpath('*//story') # @stories is a Nokogiri::XML::NodeSet of 5 stories
-    array_of_stories = []
-
-    @stories.each do |story|
-      array_of_stories << {
-        :story_title => story.css('title').first.text,
-        :program_title => story.css('program')[0].text,
-        :story_date => story.css('storyDate')[0].text,
-        :teaser => story.css('teaser')[0].text,
-        :story_url => story.css('link')[0].text,
-        :topic => story.css('slug')[0].text}
+  def scrape_stories(program) #returns a list of story hashes for the show entered
+    api_query = "#{BASE_URL + program.search_id.to_s}"
+    doc = Nokogiri::XML(open(api_query))
+    @program_stories = doc.xpath('*//story') # @stories is a Nokogiri::XML::NodeSet of stories
+    @program_stories.each do |story|
+      new_story = NprStories::Story.new
+      new_story.story_title = story.search('title').first.text
+      new_story.program_title = story.search('program')[0].text
+      new_story.story_date = story.search('storyDate')[0].text
+      new_story.teaser = story.search('teaser')[0].text
+      new_story.story_url = story.search('link')[0].text
+      new_story_topic = story.search('slug')[0].text
+      new_story.save
+      program.stories << new_story
     end
-    array_of_stories
+    program.stories
   end
 
 end
+
