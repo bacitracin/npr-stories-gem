@@ -2,24 +2,24 @@ class NprStories::CLI
 
   def call
     puts "Welcome to NPR!"
-    NprStories::Scraper.new.scrape_programs # get those programs
-    choose_program #pick a program to show stories
-    puts "See you later!"
+    NprStories::Scraper.new.scrape_programs
+    choose_program
   end
 
   def list_programs
     puts "Information on the following NPR programs is available:"
+    puts "----------------------------------------------------------------"
     NprStories::Program.all.each_with_index do |program, index|
       puts "#{index + 1}. #{program.program_title}"
     end
-    puts "-----------------------------------"
+    puts "----------------------------------------------------------------"
   end
 
   def choose_program
     program_choice = nil
     until program_choice == 'exit'
       list_programs
-      puts "Pick a program to see recent stories or type 'exit' to leave program"
+      puts "Select a program by number to see recent stories or type 'exit' to leave program"
         program_choice = gets.strip.downcase
 
         if program_choice == 'exit'
@@ -29,11 +29,11 @@ class NprStories::CLI
           @program = NprStories::Program.all[program_choice.to_i-1] # get the program from the array of programs
           @program_stories = NprStories::Scraper.new.scrape_stories(@program) # create a scraper & pull the stories for that program
           puts "Here are the recent stories from #{@program.program_title}:"
-          puts "--------------------------------"
+          puts "----------------------------------------------------------------"
           @program_stories.each_with_index do |story, index|
             puts "#{index + 1}. #{story.story_title}"
           end #each_with_index loop
-          puts "--------------------------------"
+          puts "----------------------------------------------------------------"
           choose_story
         else
           puts "Sorry I didn't get that. Please try again."
@@ -57,7 +57,7 @@ class NprStories::CLI
         puts "Date: #{@story.story_date}"
         puts "Teaser: #{@story.teaser}"
         puts "Url: #{@story.story_url}"
-        puts "------------------------------"
+        puts "----------------------------------------------------------------"
 
         puts "Would you like to read this story in the browser?"
         answer = gets.strip.downcase
