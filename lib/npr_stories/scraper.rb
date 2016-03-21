@@ -19,7 +19,7 @@ BASE_URL = 'http://api.npr.org/query?apiKey=MDIyODk1NDk0MDE0NTYxNzg5NTdkYjVhZA00
   def scrape_stories(program) #returns a list of story hashes for the show entered
     api_query = "#{BASE_URL + program.search_id.to_s}"
     doc = Nokogiri::XML(open(api_query))
-    @program_stories = doc.xpath('*//story') # @stories is a Nokogiri::XML::NodeSet of stories
+    @program_stories = doc.xpath('*//story') # @progam_stories is a Nokogiri::XML::NodeSet of stories
     @program_stories.each do |story|
       new_story = NprStories::Story.new
       new_story.story_title = story.search('title').first.text

@@ -4,9 +4,7 @@ class NprStories::Program
 
   @@programs = []
 
-  def initialize(program_title = nil, search_id = nil)
-    @program_title = program_title
-    @search_id = search_id
+  def initialize
     @stories = []
     @@programs << self
   end
