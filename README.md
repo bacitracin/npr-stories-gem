@@ -21,6 +21,7 @@ Or install it yourself as:
 ## Usage
 
 To run :
+
     $ bin/npr_stories
 
 ## Development
