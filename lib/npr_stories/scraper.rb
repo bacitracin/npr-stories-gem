@@ -6,8 +6,8 @@ BASE_URL = 'http://api.npr.org/query?apiKey=MDIyODk1NDk0MDE0NTYxNzg5NTdkYjVhZA00
 #scrape stories - grabs the stories for a particular program, scrapes another XML page & creates Story objects
 
   def scrape_programs
-    @doc = Nokogiri::XML(open('http://api.npr.org/list?id=3004'))
-    @programs = @doc.xpath('*//item')
+    doc = Nokogiri::XML(open('http://api.npr.org/list?id=3004'))
+    @programs = doc.xpath('*//item')
     @programs.each do |program|
       new_program = NprStories::Program.new 
       new_program.program_title = program.search('title').text
