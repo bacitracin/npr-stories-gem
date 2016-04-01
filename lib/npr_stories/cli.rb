@@ -37,9 +37,9 @@ class NprStories::CLI
           choose_story
         else
           puts "Sorry I didn't get that. Please try again."
-        end #if
-      end # loop
-    program_choice = nil
+        end #close if
+      end # close until loop
+    #program_choice = nil ---had this in here as extra for some reason. don't need
   end # choose_program method
 
   def choose_story

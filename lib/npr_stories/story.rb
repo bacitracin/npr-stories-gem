@@ -4,7 +4,7 @@ BASE_URL = 'http://api.npr.org/query?apiKey=MDIyODk1NDk0MDE0NTYxNzg5NTdkYjVhZA00
 
 class NprStories::Story
 
-  attr_accessor :story_title, :program_title, :story_date, :teaser, :story_url
+  attr_accessor :story_title, :program_title, :story_date, :teaser, :story_url, :program
   @@stories = []
 
   def save
