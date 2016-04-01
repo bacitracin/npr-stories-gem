@@ -26,7 +26,7 @@ class NprStories::CLI
           puts "Now exiting the program. See you later!"
 
         elsif program_choice.to_i <= NprStories::Program.all.size
-          program = NprStories::Program.all[program_choice.to_i-1] 
+          program = NprStories::Program.all[program_choice.to_i - 1] 
           @program_stories = NprStories::Scraper.new.scrape_stories(program) # create a new scraper & pull the stories for that program
           puts "Here are the recent stories from #{program.program_title}:"
           puts "----------------------------------------------------------------"
@@ -39,8 +39,7 @@ class NprStories::CLI
           puts "Sorry I didn't get that. Please try again."
         end #close if
       end # close until loop
-    #program_choice = nil ---had this in here as extra for some reason. don't need
-  end # choose_program method
+  end
 
   def choose_story
     story_choice = nil
@@ -50,8 +49,8 @@ class NprStories::CLI
       if story_choice == 'exit'
         puts "Now exiting back to the main menu..."
 
-      elsif story_choice.to_i <= NprStories::Story.all.size
-        story = @program_stories[story_choice.to_i-1]
+      elsif story_choice.to_i <= @program_stories.size 
+        story = @program_stories[story_choice.to_i - 1]
         puts "#{story_choice}. #{story.story_title}"
         puts "Program: #{story.program_title}"
         puts "Date: #{story.story_date}"
@@ -64,11 +63,11 @@ class NprStories::CLI
         if answer.include?('y')
           system('open', "#{story.story_url}")
         end
-
+      story_choice = nil 
       else
         puts "Sorry please try again."
       end # if loop
     end # until
-  end # choose_story method
+  end 
 
 end
