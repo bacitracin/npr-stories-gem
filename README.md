@@ -2,6 +2,9 @@
 
 This gem allows you to access the NPR API and see the latest stories by radio program. If you're interested in a particular story, you can have it open up in the browser for you.
 
+[Video walkthrough](https://www.youtube.com/watch?v=2RJbifcIaFc) and 
+[Project Blog Post](http://www.tracyctran.com/code/2016/03/21/npr-api-cli-gem-oo-assessment/)
+
 ## Installation
 
 Add this line to your application's Gemfile:
