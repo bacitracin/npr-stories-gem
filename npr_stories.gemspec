@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Tracy"]
   spec.email         = ["tracetrace@gmail.com"]
 
-  spec.summary       = %q{Read recent NPR stories form the command line}
+  spec.summary       = %q{Read recent NPR stories from the command line}
   spec.homepage      = "https://github.com/bacitracin/npr-stories-gem"
   spec.license       = "MIT"
 
